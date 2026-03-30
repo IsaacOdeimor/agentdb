@@ -73,16 +73,20 @@ Think of it like SQLite, but for JSON documents.
 
 ### Install
 
+Clone the repo and install dependencies:
+
 ```bash
-npm install agentdb
+git clone https://github.com/IsaacOdeimor/agentdb.git
+cd agentdb
+npm install
 ```
 
-> **No server, no setup.** AgentDB installs like any npm package. That's it.
+> **npm package coming soon.** AgentDB will be published to npm shortly. For now, clone the repo and import directly from `src/`.
 
 ### Basic usage
 
 ```typescript
-import { AgentDB } from 'agentdb';
+import { AgentDB } from './src/database.js';
 
 // 1. Open (or create) a database
 const db = new AgentDB('./my-data');
@@ -501,21 +505,26 @@ runner.migrate('./data/users.agdb', currentVersion, 2);
 
 ## Modular Imports
 
-AgentDB ships with granular sub-path exports so you only import what you need.
+Each module can be imported individually so you only pull in what you need.
 
 ```typescript
-import { AgentDB }           from 'agentdb';           // full database
-import { AgentDB }           from 'agentdb/db';         // same, explicit
-import { Collection }        from 'agentdb/collection'; // collection only
-import { StorageEngine }     from 'agentdb/engine';     // raw storage engine
-import { encrypt, decrypt }  from 'agentdb/crypto';     // encryption utils
-import { compress }          from 'agentdb/compression';// compression utils
-import { validateDocument }  from 'agentdb/schema';     // schema validator
-import { MigrationRunner }   from 'agentdb/migration';  // migrations
-import { BackupManager }     from 'agentdb/backup';     // backups
-import { WriteAheadLog }     from 'agentdb/wal';        // WAL directly
-import { crc32 }             from 'agentdb/crc32';      // checksum util
-import { AgentDBError }      from 'agentdb/errors';     // error classes
+// From the cloned repo (src/)
+import { AgentDB }           from './src/database.js';
+import { Collection }        from './src/collection.js';
+import { StorageEngine }     from './src/engine.js';
+import { encrypt, decrypt }  from './src/encryption.js';
+import { compress }          from './src/compression.js';
+import { validateDocument }  from './src/schema.js';
+import { MigrationRunner }   from './src/migration.js';
+import { BackupManager }     from './src/backup.js';
+import { WriteAheadLog }     from './src/wal.js';
+import { crc32 }             from './src/crc32.js';
+import { AgentDBError }      from './src/errors.js';
+
+// Once published to npm, imports will be:
+// import { AgentDB } from 'agentdb';
+// import { encrypt } from 'agentdb/crypto';
+// etc.
 ```
 
 ---
@@ -600,7 +609,11 @@ Press **Enter** to step through each section:
 
 Open `demo/browser-demo.html` directly in any browser — no server needed.
 
-![Browser demo showing collections sidebar, document table, query builder, and schema view](https://raw.githubusercontent.com/IsaacOdeimor/agentdb/main/demo/browser-demo.html)
+```bash
+# Just open the file in your browser
+start demo/browser-demo.html       # Windows
+open  demo/browser-demo.html       # macOS
+```
 
 Features five preloaded collections with full Browse, Query, Insert, and Schema tabs. Includes dark mode toggle.
 
