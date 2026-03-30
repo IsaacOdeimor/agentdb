@@ -1,27 +1,26 @@
 <div align="center">
 
-<br/>
-
-```
-    _                    _   ____  ____
-   / \   __ _  ___ _ __ | |_|  _ \| __ )
-  / _ \ / _` |/ _ \ '_ \| __| | | |  _ \
- / ___ \ (_| |  __/ | | | |_| |_| | |_) |
-/_/   \_\__, |\___|_| |_|\__|____/|____/
-         |___/
-```
-
-**Embedded document database for Node.js**
-
-Zero dependencies · Binary format · AES-256-GCM encryption · WAL crash safety
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/IsaacOdeimor/agentdb/main/demo/banner.svg">
+  <img src="https://raw.githubusercontent.com/IsaacOdeimor/agentdb/main/demo/banner.svg" alt="AgentDB" width="100%">
+</picture>
 
 <br/>
 
-![License](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Node](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-170%20passing-22c55e?style=flat-square)
-![Zero deps](https://img.shields.io/badge/dependencies-zero-f97316?style=flat-square)
+[![License](https://img.shields.io/badge/License-Apache_2.0-7c3aed?style=for-the-badge)](./LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
+[![Tests](https://img.shields.io/badge/Tests-170_passing-22c55e?style=for-the-badge&logo=vitest&logoColor=white)](./tests)
+[![Zero Deps](https://img.shields.io/badge/Dependencies-Zero-f97316?style=for-the-badge)](./package.json)
+
+<br/>
+
+<p>
+  <a href="#quick-start">Get Started</a> ·
+  <a href="#-storage--performance">Features</a> ·
+  <a href="#query-builder">API Docs</a> ·
+  <a href="#demo">Demo</a>
+</p>
 
 </div>
 
@@ -31,41 +30,80 @@ Zero dependencies · Binary format · AES-256-GCM encryption · WAL crash safety
 
 AgentDB is a **self-contained database** that lives inside your Node.js project. There is no server to install, no Docker container to run, no cloud account to set up. You point it at a folder, and it works — storing your data in efficient binary files right on disk.
 
-Think of it like SQLite, but for JSON documents.
+> Think of it like SQLite, but for JSON documents — with encryption built in from day one.
 
-> **Not a developer?** AgentDB is the storage engine powering apps and tools built on top of it. If someone told you to "set it up", skip to the [Quick Start](#quick-start) section — it takes about 60 seconds.
+> **Not a developer?** AgentDB is the storage engine powering apps and tools built on top of it. If someone told you to "set it up", jump to [Quick Start](#quick-start) — it takes about 60 seconds.
 
-### Why AgentDB?
+<br/>
 
-| | AgentDB | SQLite | MongoDB | JSON files |
-|---|---|---|---|---|
+<details>
+<summary><b>⚡ Storage & Performance</b> — click to expand</summary>
+<br/>
+
+| Feature | Detail |
+|---|---|
+| **Binary `.agdb` format** | Compact on-disk storage with a 32-byte header and per-record CRC32 checksums |
+| **Field indexes** | Binary search O(log n) lookups — dramatically faster queries on large collections |
+| **Smart compression** | zlib per-record compression, only activates when savings ≥ 10% and data ≥ 64 bytes |
+| **Auto compaction** | Rewrites files without tombstones when deleted records exceed 30% |
+| **Streaming cursors** | Iterate over huge result sets without loading everything into memory |
+
+</details>
+
+<details>
+<summary><b>🔐 Security & Crash Safety</b> — click to expand</summary>
+<br/>
+
+| Feature | Detail |
+|---|---|
+| **AES-256-GCM encryption** | Every record encrypted individually — PBKDF2-SHA-512 key derivation, random IV per record, auth tag |
+| **Write-Ahead Log (WAL)** | Every write is journalled first — full automatic crash recovery on next open |
+| **CRC32 checksums** | Per-record integrity verification — detects any corruption on read |
+| **Process lock** | Prevents two processes from opening the same database simultaneously |
+
+</details>
+
+<details>
+<summary><b>📊 Querying & Aggregation</b> — click to expand</summary>
+<br/>
+
+| Feature | Detail |
+|---|---|
+| **Chainable query builder** | `.where()` `.sort()` `.limit()` `.skip()` `.select()` `.first()` `.exists()` `.count()` |
+| **Aggregation pipeline** | `group` `groupWith` `sum` `avg` `min` `max` `count` `distinct` `percentile` |
+| **Full-text search** | Token-scored search across multiple fields |
+| **Operators** | `==` `!=` `>` `>=` `<` `<=` |
+
+</details>
+
+<details>
+<summary><b>🛡️ Data Integrity & Lifecycle</b> — click to expand</summary>
+<br/>
+
+| Feature | Detail |
+|---|---|
+| **Schema validation** | Enforce field types, required fields, min/max, enums, regex patterns, custom validators |
+| **TTL auto-expiry** | Documents expire automatically — per-collection default or per-document override |
+| **Events** | Subscribe to `insert` `update` `delete` `compact` on any collection |
+| **Backup & restore** | Point-in-time snapshots with atomic restore and configurable max backups |
+| **Version migrations** | Numbered migration steps that run in order on file upgrade |
+| **Upsert / replace** | Merge updates or full document replacement |
+
+</details>
+
+<br/>
+
+### Why AgentDB over the alternatives?
+
+| | AgentDB | SQLite | MongoDB | Plain JSON |
+|---|:---:|:---:|:---:|:---:|
 | Zero dependencies | ✅ | ❌ native binding | ❌ server required | ✅ |
-| Encrypted at rest | ✅ AES-256-GCM | ❌ | ✅ paid | ❌ |
+| Encrypted at rest | ✅ built-in | ❌ | ✅ paid tier | ❌ |
 | Crash safe | ✅ WAL | ✅ | ✅ | ❌ |
 | Document model | ✅ | ❌ rows only | ✅ | ✅ |
-| Binary format | ✅ compact | ✅ | ✅ | ❌ large |
+| Binary format | ✅ compact | ✅ | ✅ | ❌ bloated |
 | Field indexes | ✅ | ✅ | ✅ | ❌ |
-| TypeScript types | ✅ full | partial | partial | ✅ |
-
----
-
-## Features
-
-- **Binary `.agdb` format** — compact on-disk storage with 32-byte header and per-record CRC32 checksums
-- **AES-256-GCM encryption** — PBKDF2-SHA-512 key derivation, per-record random IV, authentication tag
-- **Write-Ahead Log (WAL)** — every write is journalled first, enabling full crash recovery on restart
-- **zlib compression** — smart per-record compression that only activates when it actually saves space (≥10%, ≥64 bytes)
-- **Chainable query builder** — `.where()`, `.sort()`, `.limit()`, `.skip()`, `.select()`
-- **Field indexes** — binary search O(log n) lookups on any field
-- **Schema validation** — enforce field types, required fields, min/max, enums, and custom validators
-- **TTL auto-expiry** — documents expire automatically after a set duration
-- **Aggregation pipeline** — `group`, `groupWith`, `sum`, `avg`, `min`, `max`, `count`, `distinct`, `percentile`
-- **Streaming cursors** — iterate over large result sets without loading everything into memory
-- **Events** — subscribe to `insert`, `update`, `delete`, `compact` on any collection
-- **Backup & restore** — point-in-time snapshots with atomic restore
-- **Version migrations** — register numbered migration steps that run in order on file upgrade
-- **Full-text search** — token-scored search across multiple fields
-- **Upsert / replace** — merge updates or full document replacement
+| Full TypeScript | ✅ | partial | partial | ✅ |
 
 ---
 
