@@ -1,0 +1,89 @@
+{
+  "name": "agentdb",
+  "version": "1.0.0",
+  "description": "Lightweight embedded document database for Node.js — binary format, AES-256-GCM encryption, WAL crash safety, zero dependencies",
+  "author": "",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./db": {
+      "import": "./dist/database.js",
+      "types": "./dist/database.d.ts"
+    },
+    "./collection": {
+      "import": "./dist/collection.js",
+      "types": "./dist/collection.d.ts"
+    },
+    "./engine": {
+      "import": "./dist/engine.js",
+      "types": "./dist/engine.d.ts"
+    },
+    "./crypto": {
+      "import": "./dist/encryption.js",
+      "types": "./dist/encryption.d.ts"
+    },
+    "./compression": {
+      "import": "./dist/compression.js",
+      "types": "./dist/compression.d.ts"
+    },
+    "./schema": {
+      "import": "./dist/schema.js",
+      "types": "./dist/schema.d.ts"
+    },
+    "./migration": {
+      "import": "./dist/migration.js",
+      "types": "./dist/migration.d.ts"
+    },
+    "./backup": {
+      "import": "./dist/backup.js",
+      "types": "./dist/backup.d.ts"
+    },
+    "./wal": {
+      "import": "./dist/wal.js",
+      "types": "./dist/wal.d.ts"
+    },
+    "./crc32": {
+      "import": "./dist/crc32.js",
+      "types": "./dist/crc32.d.ts"
+    },
+    "./errors": {
+      "import": "./dist/errors.js",
+      "types": "./dist/errors.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "demo": "tsx demo/demo.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.0.0",
+    "vitest": "^4.1.1"
+  },
+  "keywords": [
+    "embedded",
+    "database",
+    "document",
+    "nosql",
+    "encryption",
+    "wal",
+    "binary",
+    "zero-dependency"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/agentdb"
+  }
+}
